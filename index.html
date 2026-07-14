@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500;600;700&family=Space+Mono&display=swap');
+
+  :root{
+    /* Night half — looking back */
+    --night-bg: #1f1830;
+    --night-bg-2: #2c2140;
+    --plum: #6b4e71;
+    --rose: #d98b9c;
+    --paper-dark: #efe4d8;
+
+    /* Dawn half — looking forward */
+    --dawn-bg: #2c2140;
+    --dawn-bg-2: #4a3450;
+    --gold: #e3b23c;
+    --peach: #f1c199;
+    --paper-light: #faf3e8;
+
+    --ink: #221a2e;
+    --thread: rgba(245,235,220,0.28);
+
+    --display: 'Cormorant Garamond', serif;
+    --body: 'EB Garamond', serif;
+    --hand: 'Caveat', cursive;
+    --mono: 'Space Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family: var(--body);
+    background: var(--night-bg);
+    color: var(--paper-dark);
+    overflow-x: hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ---------- shared ---------- */
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 0 28px; }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .reveal{
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(217,139,156,0.14), transparent 60%),
+      var(--night-bg);
+    padding: 40px 24px;
+  }
+  .hero .eyebrow{ color: var(--rose); margin-bottom: 18px; }
+  .hero h1{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(42px, 8vw, 88px);
+    line-height: 1.05;
+    margin: 0 0 20px;
+    color: var(--paper-dark);
+  }
+  .hero h1 span{ color: var(--rose); }
+  .hero p.sub{
+    font-size: clamp(16px, 2vw, 19px);
+    max-width: 520px;
+    opacity: 0.75;
+    margin: 0 auto;
+  }
+  .hero .names{
+    font-family: var(--hand);
+    font-size: 28px;
+    margin-top: 34px;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom: 38px;
+    left:50%;
+    transform: translateX(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    opacity:0.55;
+  }
+  .scroll-cue .line{
+    width:1px; height:46px;
+    background: linear-gradient(to bottom, var(--rose), transparent);
+    animation: pulse-line 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse-line{ 0%,100%{ opacity:0.3;} 50%{ opacity:1;} }
+  .scroll-cue span{ font-family: var(--mono); font-size: 10px; letter-spacing:0.2em; text-transform:uppercase; }
+
+  /* ---------- section headers ---------- */
+  .section-head{ text-align:center; padding: 120px 24px 70px; }
+  .section-head h2{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 54px);
+    margin: 14px 0 0;
+  }
+  .section-head p{ opacity:0.7; max-width:480px; margin: 16px auto 0; }
+
+  /* ---------- timeline / thread ---------- */
+  .timeline{
+    position: relative;
+    padding: 20px 24px 140px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    width:1px;
+    background: linear-gradient(to bottom, transparent, var(--thread) 8%, var(--thread) 92%, transparent);
+    transform: translateX(-50%);
+  }
+  .entry{
+    position: relative;
+    display:flex;
+    justify-content:center;
+    margin: 0 auto 130px;
+    max-width: 980px;
+  }
+  .entry-inner{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items:center;
+    width:100%;
+  }
+  .entry:nth-child(even) .entry-inner{ direction: rtl; }
+  .entry:nth-child(even) .entry-inner > *{ direction: ltr; }
+
+  .polaroid{
+    background: var(--paper-dark);
+    padding: 14px 14px 46px;
+    box-shadow: 0 18px 40px -14px rgba(0,0,0,0.55);
+    transform: rotate(var(--tilt, -3deg));
+    transition: transform 0.4s ease;
+    position: relative;
+  }
+  .polaroid:hover{ transform: rotate(0deg) scale(1.02); }
+  .polaroid .frame{
+    width:100%;
+    aspect-ratio: 4/5;
+    background: #3a2d47 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%233a2d47'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    overflow:hidden;
+  }
+  .polaroid .frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .polaroid .cap{
+    position:absolute;
+    bottom: 10px; left: 0; right:0;
+    text-align:center;
+    font-family: var(--hand);
+    font-size: 20px;
+    color: var(--ink);
+  }
+
+  .entry-text .eyebrow{ color: var(--rose); }
+  .entry-text h3{
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 8px 0 12px;
+  }
+  .entry-text p{
+    font-size: 17px;
+    line-height: 1.7;
+    opacity: 0.82;
+    margin: 0;
+  }
+  .entry-text p.placeholder{
+    border-left: 2px solid var(--rose);
+    padding-left: 14px;
+    opacity: 0.55;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 720px){
+    .entry-inner, .entry:nth-child(even) .entry-inner{ grid-template-columns: 1fr; direction: ltr; }
+    .timeline::before{ left: 24px; }
+    .entry{ padding-left: 40px; margin-bottom: 90px; }
+    .entry-inner{ gap: 22px; }
+  }
+
+  @media (max-width: 600px){
+    .wrap{ padding: 0 18px; }
+    .hero{ padding: 32px 20px; min-height: 100svh; }
+    .hero .names{ font-size: 24px; margin-top: 26px; }
+    .scroll-cue{ bottom: 24px; }
+
+    .section-head{ padding: 80px 18px 44px; }
+    .section-head p{ font-size: 15px; }
+
+    .timeline{ padding: 10px 18px 90px; }
+    .timeline::before{ left: 18px; }
+    .entry{ padding-left: 30px; margin-bottom: 70px; }
+
+    .polaroid{ padding: 10px 10px 38px; }
+    .polaroid .cap{ font-size: 17px; bottom: 8px; }
+    .entry-text h3{ font-size: 22px; margin: 6px 0 10px; }
+    .entry-text p{ font-size: 15.5px; line-height: 1.65; }
+
+    .dawn-shift{ height: auto; padding: 70px 20px; }
+
+    .letter-section{ padding: 70px 16px 100px; }
+    .letter{ padding: 30px 22px; }
+    .letter .body-text{ font-size: 16px; }
+    .signature{ font-size: 28px; }
+
+    footer{ padding: 40px 20px 56px; font-size: 10px; }
+  }
+
+  /* larger tap area, no accidental hover-lock on touch devices */
+  @media (hover: none){
+    .polaroid:hover{ transform: rotate(var(--tilt, -3deg)); }
+    .polaroid:active{ transform: rotate(0deg) scale(1.02); }
+  }
+
+  /* ---------- dawn transition ---------- */
+  .dawn-shift{
+    height: 340px;
+    background: linear-gradient(to bottom, var(--night-bg-2), var(--dawn-bg) 40%, var(--dawn-bg-2));
+    position: relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .dawn-shift p{
+    font-family: var(--hand);
+    font-size: clamp(22px, 3vw, 30px);
+    color: var(--peach);
+    max-width: 440px;
+    padding: 0 24px;
+  }
+
+  .future{
+    background: linear-gradient(to bottom, var(--dawn-bg-2), #3a2b46);
+  }
+  .future .timeline::before{
+    background: linear-gradient(to bottom, transparent, rgba(227,178,60,0.35) 8%, rgba(227,178,60,0.35) 92%, transparent);
+  }
+  .future .polaroid{ background: var(--paper-light); box-shadow: 0 18px 44px -14px rgba(0,0,0,0.5), 0 0 0 1px rgba(227,178,60,0.25); }
+  .future .polaroid .frame{ background-color: #4a3450; }
+  .future .entry-text .eyebrow{ color: var(--gold); }
+  .future .entry-text p.placeholder{ border-color: var(--gold); }
+  .future .section-head .eyebrow{ color: var(--gold); }
+
+  /* ---------- letter ---------- */
+  .letter-section{
+    background: #3a2b46;
+    padding: 100px 24px 160px;
+    display:flex;
+    justify-content:center;
+  }
+  .letter{
+    max-width: 620px;
+    width:100%;
+    background: var(--paper-light);
+    color: var(--ink);
+    padding: clamp(36px, 6vw, 70px);
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.6);
+    position:relative;
+  }
+  .letter::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:6px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+  }
+  .letter .eyebrow{ color: var(--dusk, #8a6b8f); opacity:0.6; }
+  .letter h2{
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(30px, 4vw, 40px);
+    margin: 10px 0 30px;
+  }
+  .letter .body-text{
+    font-family: var(--body);
+    font-size: 18px;
+    line-height: 1.85;
+  }
+  .letter .body-text p{ margin: 0 0 20px; }
+  .letter .body-text .placeholder-block{
+    border: 1px dashed rgba(34,26,46,0.3);
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+  .signature{
+    margin-top: 40px;
+    font-family: var(--hand);
+    font-size: 34px;
+    color: var(--rose);
+  }
+
+  footer{
+    text-align:center;
+    padding: 50px 24px 70px;
+    background: #3a2b46;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="eyebrow">a story, still being written</div>
+  <h1>For <span>You</span>,<br>from me</h1>
+  <p class="sub">We were two chapters of the same book, written in a language only we could read, until the pages turned without us. 
+  </p>
+  <div class="names">Mj &amp; Soso</div>
+  <div class="scroll-cue">
+    <div class="line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ============ OUR STORY ============ -->
+<section id="story">
+  <div class="section-head reveal">
+    <div class="eyebrow">chapter one</div>
+    <h2>Our Story</h2>
+    <p>When I look back, the time I spent with you was the best time I ever had in my entire life.
+      I remember that one time we were walking together, and I was walking fast and you said, "Life is very long, Walk slowly." I can still feel the atmosphere.
+    </p>
+  </div>
+
+  <div class="timeline wrap" id="story-timeline">
+    <!-- entries injected by JS from storyData -->
+  </div>
+</section>
+
+<!-- ============ DAWN TRANSITION ============ -->
+<div class="dawn-shift reveal">
+  <p>"and somewhere between everything we were,<br>I started imagining everything we could be."</p>
+</div>
+
+<!-- ============ OUR FUTURE ============ -->
+<section class="future" id="future">
+  <div class="section-head reveal">
+    <div class="eyebrow">chapter two</div>
+    <h2>How Our Future Could Look</h2>
+    <p>I never in my wild dreams imagined a future without you.</p>
+  </div>
+
+  <div class="timeline wrap" id="future-timeline">
+    <!-- entries injected by JS from futureData -->
+  </div>
+</section>
+
+<!-- ============ LETTER ============ -->
+<section class="letter-section">
+  <div class="letter reveal">
+    <div class="eyebrow">one last thing</div>
+    <h2>What I Want to Say</h2>
+    <div class="body-text">
+      <div class="placeholder-block">
+        <p>
+        The girl I talked you about. I was never able to forget about her. I used to think about her sometimes.
+        Even if you and I could be together, I would have thought about her sometimes.
+        That is the reason I told you before I don't love you when you were in Osaka. We met again, And I started with her.
+        I wanted to know how she was doing. We talked for a while.
+        </p>
+
+        <p>
+        That night she said something emotional and I was very drunk. And you know How emotional I get after being drunk.
+        I told you Let's end our relationship. It was just for a moment. The next morming, when I wake up,
+        I was very angry with myself. I immediately realized I love you, there is no more her. I will never think about her.
+        In a way, it was good. I got clarity. Now I can be with you without any affect of my past. Now I can be be fully dedicated to you.
+        </p>
+        
+        <p>
+        I was angry with myself. I was very confused. I sent her a message telling her that we are never going to talk again.
+        I also immediately wanted to send you a message but I was very confused. Not because I was not sure about my feelings for you
+        but how to tell you, what should I tell you? I didn't tell you for two days. It as too late. I should have sent you the message
+        the next morming. I didn't. I waited and you were gone by then. In all of this, I realized, how much I loved you. I realized she
+        was my past. She doesn't matter. I will never ever think about her.
+        </p>
+
+        <p>
+        I am a simple person. I might not be a good person but I can promise you one thing. There will never
+        be anybody else in my life than you. I am 100% yours. I never never drank since that day. I never want to be drunk again. 
+        I do stupid things when I am drunk. I am a loyal person. I was never disloyal with you. Everything that happened was the emotion of my past.
+        THere is no more. I only want you. I only love you. I will never stop loving you.
+        </p>
+
+        <p>        
+        You are the only important person  in my life. I cannot promise to be a perfect person. I might be lazy, 
+        you might need to angry with me or might have to push me to do things but my heart will only beat for you. 
+        I will only be yours. I want to grow old with you.
+        </p>
+        <p>
+          We were talking about getting married. We talked about kids. We talked about a house. Whenever My mom calls me she asks me about
+          you. I always say she is fine. We were planning our lives together. I did a mistake, that mistake should not destroy our future.
+          Please think again.
+        </p>
+        <p>
+        I promised you. we will meet this weekend. I want you to send me a message and tell me "Come to Tokyo this weekend.".
+        I will wait for your message. Please Please call me to Tokyo this weekend.
+        </p>
+      </div>
+      <p>I want you to give me a chance. Give us a chance. I will never leave your side.</p>
+      <p>I want you to be happy. If you feel you will not be happy with me, then I will understand.</p>
+      <p>I wish to god to give you my eyes even for a moment so that you could see how much you mean to me.</p>
+    </div>
+    <div class="signature">— MJ</div>
+  </div>
+</section>
+
+<footer>made with everything I've got</footer>
+
+<script>
+  /* ============================================================
+     EDIT YOUR CONTENT HERE
+     Add / remove entries freely. `img` should point to a file you
+     place inside assets/current/ or assets/future/.
+     `alt` is for accessibility (describe the photo briefly).
+     `caption` is the short handwritten note under the photo.
+     `title` + `text` are the story beats — replace the placeholder text.
+  ============================================================ */
+
+  const storyData = [
+    {
+      img: "assets/current/01.jpg",
+      alt: "The two of you, early on",
+      caption: "the beginning",
+      title: "Knowing You",
+      text: "After Office, you were going somewhere. You boarded the wrong train and was in my train. I tapped on your shoulder and told you that you should board the other train. You said maybe it was our destiny.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/02.jpg",
+      alt: "Early days together",
+      caption: "the early days",
+      title: "Falling for you",
+      text: "We went out for dinner. I smoked my first cigar. We started meeeting more. I started liking you more and more.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/03.jpg",
+      alt: "Getting to know each other",
+      caption: "learning each other",
+      title: "Getting to know your world",
+      text: "You were the best person I ever have met. I was very lucky to have you in my life. You took me to places. You taught me a lot of things. You loved me purely. You were kind, humble and disciplined. You were everything I never was. You were the 50% percent I lacked. I felt you and I together were a complete person.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/04.jpg",
+      alt: "A favorite memory together",
+      caption: "a good day",
+      title: "A day I still think about",
+      text: "We went on a drive in while you were in Osaka. I was driving and suddenly it started raining heavily, IU couldn't see the front. You took off your shirt and cleaned the window. I still hear the sound of the rain and your smell. I miss drinking and dancing with you and watching Big Bang Theory.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/05.jpg",
+      alt: "Building a life together",
+      caption: "building something",
+      title: "What made it feel like home",
+      text: "I really miss going to the temple with you. That felt like we were not just a couple but a family. We did many things together. But going to the temple with you is the best moment I had with you. It felt like family.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/08.jpg",
+      alt: "The best of us",
+      caption: "the best of us",
+      title: "Us, at our best",
+      text: "We were far but still so close. You shared your problems with me. I shared mine. You were my strength. I tried to be yours but probably I failed.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/07.jpg",
+      alt: "Where things started to strain",
+      caption: "the turn",
+      title: "What we did",
+      text: "We went to many places together. Starting from DisneySea, hiking, driving and many more. I wish we could have done more things together.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/06.jpg",
+      alt: "The hard chapter",
+      caption: "what happened",
+      title: "What I liked about you.",
+      text: "I love your pure heart. I love your cute habit of scolding me. I miss that. I love your hair. I love your eyes. I love your honesty and I love you.",
+      placeholder: true
+    },
+    {
+      img: "assets/current/09.jpg",
+      alt: "What I've learned since",
+      caption: "since then",
+      title: "What I miss.",
+      text: "I miss you touching my lips. I miss you looking at me. I miss you punching me. I miss we watching Big Bang Theory together. I miss your smile. I miss your voice. I miss your laugh. I miss your presence. I miss our fights. I missing bringing tea for you. I miss you.",
+      placeholder: true
+    }
+  ];
+
+  const futureData = [
+    {
+      img: "assets/future/01.png",
+      alt: "If we tried again",
+      caption: "if we tried again",
+      title: "A slower start, this time",
+      text: "I want to try again. I want to everything I was not. I want to be the person you deserve. I want to be the person you can trust. I want to be the person you can rely on. I want to be the person you can love. I want to be the person you can be happy with.",
+      placeholder: true
+    },
+    {
+      img: "assets/future/02.png",
+      alt: "Rebuilding trust",
+      caption: "rebuilding",
+      title: "Rebuilding, piece by piece",
+      text: "I want to take care of you. Only you. You are 50% of me. I want to be 50% of yours.",
+      placeholder: true
+    },
+    {
+      img: "assets/future/03.png",
+      alt: "An imagined future together",
+      caption: "an ordinary someday",
+      title: "The life I picture",
+      text: "I always imagined, one day we could go to Nepal. I want to show you where I was born. I want to take you to the places I want to go. I want to go to China, Norway, everywhere with yuo.",
+      placeholder: true
+    },
+    {
+      img: "assets/future/04.png",
+      alt: "An imagined future together, older",
+      caption: "still us",
+      title: "Growing older, together",
+      text: "I imagined a life, where you would have a beautiful coffee shop. I will go to job and come back to help you in your shop. I have imagined this more than a 100 times. But I never told you.",
+      placeholder: true
+    },
+    {
+      img: "assets/future/05.png",
+      alt: "An imagined future together, aged",
+      caption: "the long road",
+      title: "The version of us I hope for",
+      text: "I want to be old with you. I want you to punch me when we get old together. I want you to touch my lips. I want to hold your hand. I want you more in my life than I want me.",
+      placeholder: true
+    }
+  ];
+
+  function buildTimeline(containerId, data){
+    const el = document.getElementById(containerId);
+    data.forEach((item, i) => {
+      const tilt = (i % 2 === 0 ? -1 : 1) * (2 + Math.random() * 3);
+      const entry = document.createElement("div");
+      entry.className = "entry reveal";
+      entry.innerHTML = `
+        <div class="entry-inner">
+          <div class="polaroid" style="--tilt:${tilt}deg">
+            <div class="frame">
+              <img src="${item.img}" alt="${item.alt}" loading="lazy"
+                   onerror="this.closest('.frame').innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:rgba(245,235,220,0.4);font-family:Space Mono,monospace;font-size:11px;text-align:center;padding:16px;\\'>photo goes here<br>${item.img}</div>'">
+            </div>
+            <div class="cap">${item.caption}</div>
+          </div>
+          <div class="entry-text">
+            <div class="eyebrow">${String(i+1).padStart(2,'0')}</div>
+            <h3>${item.title}</h3>
+            <p class="${item.placeholder ? 'placeholder' : ''}">${item.text}</p>
+          </div>
+        </div>
+      `;
+      el.appendChild(entry);
+    });
+  }
+
+  buildTimeline("story-timeline", storyData);
+  buildTimeline("future-timeline", futureData);
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add("in");
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
